@@ -9,8 +9,18 @@
         <h1>People List</h1>
         <ul>
             {% for person in people %}
-                <li>{{ person.name }} {{ person.surname }}</li>
+                <li>
+                    {{ person.name }} {{ person.surname }}
+                    <a href="{{ path('person_edit', {'id': person.id}) }}">edit</a>
+                    <form method="post" action="{{ path('person_delete', {'id': person.id}) }}" onsubmit="return confirm('Are you sure?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ person.id) }}">
+                        <button type="submit">delete</button>
+                    </form>
+                </li>
             {% endfor %}
+
+            <a href="{{ path('person_new') }}" class="btn btn-primary">Add New Person</a>
+
         </ul>
     </body>
 </html>

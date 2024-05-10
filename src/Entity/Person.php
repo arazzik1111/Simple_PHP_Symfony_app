@@ -18,6 +18,11 @@ class Person
      */
     private $id;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
     /**
      * @ORM\Column(type="string", length=255)
      */
