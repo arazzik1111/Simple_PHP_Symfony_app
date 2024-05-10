@@ -1,0 +1,16 @@
+{# templates/person/index.html.twig #}
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>People List</title>
+    </head>
+    <body>
+        <h1>People List</h1>
+        <ul>
+            {% for person in people %}
+                <li>{{ person.name }} {{ person.surname }}</li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
