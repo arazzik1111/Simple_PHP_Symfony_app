@@ -5,11 +5,12 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Services\PersonService;
+use App\Entity\Person;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use App\Services\PersonService;
 
 class PersonController extends AbstractController
 {
@@ -20,26 +21,40 @@ class PersonController extends AbstractController
         $this->personService = $personService;
     }
 
-    public function new(Request $request): Response
-{
-    $result = $this->personService->createPerson($request);
-
-    if ($result instanceof \Symfony\Component\Form\FormInterface) {
-        return $this->render('person/new.html.twig', [
-            'form' => $result->createView(),
-        ]);
-    }
-
-    return $this->redirectToRoute('people');
-}
-
     public function index(): Response
     {
         $people = $this->personService->getPeople();
 
-        return $this->render('person/index.html.twig', [
-            'people' => $people,
-        ]);
+        return $this->json($people);
+    }
+
+    public function new(Request $request): Response
+    {
+        $person = new Person();
+        $result = $this->personService->handleJson($request, $person);
+
+        if ($result instanceof Person) {
+            return $this->json($result, Response::HTTP_CREATED);
+        }
+
+        return $this->json(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+    }
+
+    public function edit(Request $request, $id): Response
+    {
+        $person = $this->personService->getPerson($id);
+
+        if (!$person) {
+            return $this->json(['error' => 'No person found for id '.$id], Response::HTTP_NOT_FOUND);
+        }
+
+        $result = $this->personService->handleJson($request, $person);
+
+        if ($result instanceof Person) {
+            return $this->json($result, Response::HTTP_OK);
+        }
+
+        return $this->json(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
     }
 
     public function delete(Request $request, $id): Response
@@ -47,13 +62,11 @@ class PersonController extends AbstractController
         $person = $this->personService->getPerson($id);
 
         if (!$person) {
-            throw $this->createNotFoundException('No person found for id '.$id);
+            return $this->json(['error' => 'No person found for id '.$id], Response::HTTP_NOT_FOUND);
         }
 
-        if ($this->isCsrfTokenValid('delete'.$person->getId(), $request->request->get('_token'))) {
             $this->personService->deletePerson($person);
-        }
+            return $this->json(['success' => 'Person deleted'], Response::HTTP_OK);
 
-        return $this->redirectToRoute('people');
     }
 }

@@ -17,7 +17,7 @@ person_delete:
 person_edit:
     path: /people/{id}/edit
     controller: App\Controller\PersonController::edit
-    methods: [POST]
+    methods: [GET, POST]
 
 people:
     path: /people
