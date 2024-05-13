@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 // src/Entity/Person.php
 
 namespace App\Entity;
@@ -16,7 +17,7 @@ class Person
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     public function getId(): ?int
     {
@@ -26,7 +27,7 @@ class Person
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)

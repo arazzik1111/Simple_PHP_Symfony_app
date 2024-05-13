@@ -1,6 +1,8 @@
 <?php
 // src/Controller/PersonController.php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\Entity\Person;
@@ -19,7 +21,11 @@ class PersonController extends AbstractController
     public function new(Request $request, EntityManagerInterface $em): Response
     {
         $person = new Person();
-        $form = $this->createForm(PersonType::class, $person);
+        $form = $this->createFormBuilder($person)
+            ->add('name')
+            ->add('surname')
+            ->getForm();
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
