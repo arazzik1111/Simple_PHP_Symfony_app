@@ -5,3 +5,26 @@ controllers:
 kernel:
     resource: ../src/Kernel.php
     type: annotation
+
+
+# config/routes.yaml
+
+person_delete:
+    path: /people/{id}/delete
+    controller: App\Controller\PersonController::delete
+    methods: [POST]
+
+person_edit:
+    path: /people/{id}/edit
+    controller: App\Controller\PersonController::edit
+    methods: [POST]
+
+people:
+    path: /people
+    controller: App\Controller\PersonController::index
+    methods: [GET]
+
+person_new:
+    path: /people/new
+    controller: App\Controller\PersonController::new
+    methods: [GET, POST]
