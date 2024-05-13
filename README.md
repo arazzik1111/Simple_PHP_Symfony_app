@@ -1,5 +1,3 @@
-Sure, I can help with that. Here's how you can update your README:
-
 ```markdown
 # Symfony Person Management Project
 
