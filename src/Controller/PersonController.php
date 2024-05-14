@@ -5,12 +5,10 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Person;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use App\Services\PersonService;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PersonController extends AbstractController
 {
@@ -21,52 +19,28 @@ class PersonController extends AbstractController
         $this->personService = $personService;
     }
 
-    public function index(): Response
+    public function index()
     {
-        $people = $this->personService->getPeople();
-
-        return $this->json($people);
+        return $this->json($this->personService->getPeople());
     }
 
-    public function new(Request $request): Response
+    public function new(Request $request)
     {
-        $person = new Person();
-        $result = $this->personService->handleJson($request, $person);
-
-        if ($result instanceof Person) {
-            return $this->json($result, Response::HTTP_CREATED);
-        }
-
-        return $this->json(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+        return $this->personService->createPerson($request);
     }
 
-    public function edit(Request $request, $id): Response
+    public function edit(Request $request, $id)
     {
-        $person = $this->personService->getPerson($id);
-
-        if (!$person) {
-            return $this->json(['error' => 'No person found for id '.$id], Response::HTTP_NOT_FOUND);
-        }
-
-        $result = $this->personService->handleJson($request, $person);
-
-        if ($result instanceof Person) {
-            return $this->json($result, Response::HTTP_OK);
-        }
-
-        return $this->json(['error' => 'Invalid data'], Response::HTTP_BAD_REQUEST);
+        return $this->personService->updatePerson($request, $id);
     }
 
-    public function delete(Request $request, $id): Response
+    public function delete($id)
     {
-        $person = $this->personService->getPerson($id);
-
-        if (!$person) {
-            return $this->json(['error' => 'No person found for id '.$id], Response::HTTP_NOT_FOUND);
-        }
-
-            $this->personService->deletePerson($person);
-            return $this->json(['success' => 'Person deleted'], Response::HTTP_OK);
-
+        return $this->personService->deletePerson($id);
     }
+    public function patch(Request $request, $id)
+    {
+        return $this->personService->patchPerson($request, $id);
+    }
+
 }

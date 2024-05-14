@@ -9,16 +9,6 @@ kernel:
 
 # config/routes.yaml
 
-person_delete:
-    path: /people/{id}/delete
-    controller: App\Controller\PersonController::delete
-    methods: [POST]
-
-person_edit:
-    path: /people/{id}/edit
-    controller: App\Controller\PersonController::edit
-    methods: [GET, POST]
-
 people:
     path: /people
     controller: App\Controller\PersonController::index
@@ -27,4 +17,19 @@ people:
 person_new:
     path: /people/new
     controller: App\Controller\PersonController::new
-    methods: [GET, POST]
+    methods: [POST]
+
+person_edit:
+    path: /people/{id}/edit
+    controller: App\Controller\PersonController::edit
+    methods: [PUT]
+
+person_delete:
+    path: /people/{id}/delete
+    controller: App\Controller\PersonController::delete
+    methods: [DELETE]
+
+person_patch:
+    path: /people/{id}/patch
+    controller: App\Controller\PersonController::patch
+    methods: [PATCH]
