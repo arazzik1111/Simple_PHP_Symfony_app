@@ -134,4 +134,21 @@ class PersonService
         return new Response(json_encode(['error' => 'Invalid data']), Response::HTTP_BAD_REQUEST);
     }
 
+    public function showPerson($id): Response
+    {
+        $person = $this->getPerson($id);
+
+        if (!$person) {
+            return new Response(json_encode(['error' => 'No person found for id '.$id]), Response::HTTP_NOT_FOUND);
+        }
+
+        // Serialize the Person object to JSON
+        $personJson = json_encode([
+            'id' => $person->getId(),
+            'name' => $person->getName(),
+            'surname' => $person->getSurname(),
+        ]);
+
+        return new Response($personJson, Response::HTTP_OK);
+    }
 }

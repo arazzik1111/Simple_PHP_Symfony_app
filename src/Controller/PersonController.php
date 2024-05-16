@@ -38,9 +38,14 @@ class PersonController extends AbstractController
     {
         return $this->personService->deletePerson($id);
     }
+
     public function patch(Request $request, $id)
     {
         return $this->personService->patchPerson($request, $id);
     }
 
+    public function show($id)
+    {
+        return $this->personService->showPerson($id);
+    }
 }

@@ -14,6 +14,11 @@ people:
     controller: App\Controller\PersonController::index
     methods: [GET]
 
+people_id:
+    path: /people/{id}
+    controller: App\Controller\PersonController::show
+    methods: [GET]
+
 person_new:
     path: /people/new
     controller: App\Controller\PersonController::new
